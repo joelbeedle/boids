@@ -43,8 +43,8 @@ class Boid:
 
     def update(self, boids):
         alignment = self.align(boids)
-        cohesion = self.cohesion(boids)
-        separation = self.separation(boids)
+        cohesion = self.cohere(boids)
+        separation = self.separate(boids)
 
         self.acceleration += alignment
         self.acceleration += cohesion
@@ -88,7 +88,7 @@ class Boid:
             steering = avg_vec - self.velocity
         return steering
 
-    def cohesion(self, boids):
+    def cohere(self, boids):
         steering = pygame.Vector2()
         total = 0
         centre_of_mass = pygame.Vector2()
@@ -110,7 +110,7 @@ class Boid:
                 steering = (steering / np.linalg.norm(steering)) * MAX_FORCE
         return steering
 
-    def separation(self, boids):
+    def separate(self, boids):
         steering = pygame.Vector2()
         total = 0
         avg_vec = pygame.Vector2()
@@ -131,15 +131,6 @@ class Boid:
             if np.linalg.norm(steering) > MAX_FORCE:
                 steering = (steering / np.linalg.norm(steering)) * MAX_FORCE
         return steering
-
-    def apply_behaviour(self, boids):
-        alignment = self.align(boids)
-        cohesion = self.cohesion(boids)
-        separation = self.separation(boids)
-
-        self.acceleration += alignment
-        self.acceleration += cohesion
-        self.acceleration += separation
 
 
 pygame.init()
